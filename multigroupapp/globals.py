@@ -5,4 +5,4 @@ import logging
 logger = logging.getLogger(__name__)
 
 embedding_model = HuggingFaceEmbeddings(model_name=HF_MODEL_NAME)
-logger.info("✅ HuggingFace Embedding model loaded globally.")
+logger.info("HuggingFace Embedding model loaded globally.")

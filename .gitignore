@@ -1,1 +1,17 @@
 .*env
+.venv
+ragAppEnv/
+__pycache__/
+*.py[cod]
+*.pyo
+*.log
+# Hidden env and cache-related files/folders
+.*env*
+.*__pycache__*
+
+# OS/editor-specific files
+.DS_Store
+*.swp
+*.faiss
+*.pkl
+*.txt

@@ -1,10 +1,17 @@
 from fastapi import FastAPI, HTTPException
-import traceback, logging
+import traceback, logging, os, aiofiles
 from llama_call import chat_with_model
 from vector_store import VectorDBSingleton
-from models.models import UpdateVectorRequest, QueryRequest
+from models.models import UpdateVectorRequest, QueryRequest, MessageRequest
 from globals import embedding_model  
+from pydantic import BaseModel
+from datetime import datetime
+from getPath import get_group_file_path
 app = FastAPI()
+
+DATA_DIR = os.getenv("GROUP_TEXT_DIR", "/home/azureuser/IBComm_RAG/multigroupapp/group_texts")
+os.makedirs(DATA_DIR, exist_ok=True)
+
 
 # Logging setup
 logging.basicConfig(level=logging.INFO)
@@ -16,6 +23,19 @@ def startup_event():
     logger.info("Loading embedding model...")
     _ = embedding_model  # Force loading at startup
     logger.info("Embedding model loaded successfully.")
+
+
+@app.post("/save_message")
+async def save_message(req: MessageRequest):
+    file_path = os.path.join(DATA_DIR, f"{req.group_id}.txt")
+    timestamp = req.timestamp or datetime.utcnow().isoformat()
+    try:
+        async with aiofiles.open(file_path, mode='a') as f:
+            await f.write(f"[{timestamp}] : {req.message}\n")
+        return {"status": "success"}
+    except Exception as e:
+        return {"status": "error", "message": str(e)}
+
 
 
 @app.post("/update_vectorstore")
@@ -52,8 +72,12 @@ def query_vector_db(req: QueryRequest):
     If the file is changed, it will refresh the vector store first.
     """
     try:
-        logger.info(f"Received query request for group_id='{req.group_id}', doc='{req.document_path}'")
-        singleton = VectorDBSingleton(document_path=req.document_path, group_id=req.group_id)
+        document_path = get_group_file_path(req.group_id)
+        logger.info(f"Received query request for group_id='{req.group_id}'")
+        if not os.path.exists(document_path):
+            raise FileNotFoundError(f"No document found for group_id '{req.group_id}'")
+
+        singleton = VectorDBSingleton(document_path=document_path, group_id=req.group_id)
 
         # Auto-refresh if changes detected
         updated = singleton.update_vectorstore_if_needed()
@@ -73,7 +97,7 @@ def query_vector_db(req: QueryRequest):
 
         return {
             "group_id": req.group_id,
-            "document_path": req.document_path,
+            "document_path": document_path,
             "response": response,
             "retrieved_docs": results
         }

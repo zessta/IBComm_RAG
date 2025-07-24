@@ -1,15 +1,22 @@
-from fastapi import FastAPI, HTTPException
-import traceback, logging, os, aiofiles
+from fastapi import FastAPI, HTTPException, Request
+import traceback, logging, os, aiofiles,shutil
 from llama_call import chat_with_model
 from vector_store import VectorDBSingleton
-from models.models import UpdateVectorRequest, QueryRequest, MessageRequest
+from models.models import UpdateVectorRequest, QueryRequest, MessageRequest, DeleteRequest
 from globals import embedding_model  
 from pydantic import BaseModel
 from datetime import datetime
 from getPath import get_group_file_path
-app = FastAPI()
 
-DATA_DIR = os.getenv("GROUP_TEXT_DIR", "/home/azureuser/IBComm_RAG/multigroupapp/group_texts")
+app = FastAPI(
+    title="IBComm RAG API",
+    description="API for saving group messages, updating vector stores, and querying documents using embeddings.",
+    version="1.0.0",
+    docs_url="/v1/docs",
+    redoc_url="/v1/redoc"
+)
+
+DATA_DIR = os.getenv("GROUP_TEXT_DIR", "/home/Praveen_ZT/IBComm_RAG/multigroupapp/group_texts")
 os.makedirs(DATA_DIR, exist_ok=True)
 
 
@@ -27,19 +34,27 @@ def startup_event():
 
 @app.post("/save_message")
 async def save_message(req: MessageRequest):
+    """
+    Appends a message to the text file associated with a group.
+
+    - Creates a new file if it doesn't exist.
+    - Automatically adds a timestamp (UTC) if not provided.
+    """
+
+    req_group_id = req.group_id
     file_path = os.path.join(DATA_DIR, f"{req.group_id}.txt")
     timestamp = req.timestamp or datetime.utcnow().isoformat()
     try:
         async with aiofiles.open(file_path, mode='a') as f:
             await f.write(f"[{timestamp}] : {req.message}\n")
-        return {"status": "success"}
+        return {"status": f"successfully saved to the message in the group id: {req_group_id}"}
     except Exception as e:
         return {"status": "error", "message": str(e)}
 
 
 
 @app.post("/update_vectorstore")
-def update_vectorstore(request: UpdateVectorRequest):
+async def update_vectorstore(request: UpdateVectorRequest):
     """
     Updates vector store for a specific group_id and document_path.
     Call this periodically (e.g., every 10 min from a daemon).
@@ -66,10 +81,12 @@ def update_vectorstore(request: UpdateVectorRequest):
 
 
 @app.post("/query")
-def query_vector_db(req: QueryRequest):
+async def query_vector_db(req: QueryRequest):
     """
-    Query vector DB for a given group and document.
-    If the file is changed, it will refresh the vector store first.
+    Sends a natural language question to the vector store for a group and gets a response using an LLM.
+
+    - Automatically refreshes the vector store if the file has changed.
+    - Uses semantic search and a language model to generate a response.
     """
     try:
         document_path = get_group_file_path(req.group_id)
@@ -95,11 +112,8 @@ def query_vector_db(req: QueryRequest):
         results = [doc.page_content for doc in docs]
         response = chat_with_model(text=results, query=req.text)
 
-        return {
-            "group_id": req.group_id,
-            "document_path": document_path,
-            "response": response,
-            "retrieved_docs": results
+        return{
+            "response":response
         }
 
     except ValueError as ve:
@@ -112,3 +126,48 @@ def query_vector_db(req: QueryRequest):
         logger.error("Unhandled exception occurred:")
         logger.error(traceback.format_exc())
         raise HTTPException(status_code=500, detail="Internal server error")
+
+
+@app.delete("/delete_group")
+async def delete_group(req: DeleteRequest,request: Request):
+    """
+    Deletes:
+    - Text file: group_texts/{groupid}.txt
+    - Vector directory: vector_stores/{groupid}/
+    """
+    groupid = req.groupid.strip()
+    txt_path = os.path.join("group_texts", f"{groupid}.txt")
+    dir_path = os.path.join("vector_stores", groupid)
+
+    # Enhanced client IP extraction
+    client_host = request.client.host
+    logging.info(f"Received delete request from {client_host} for groupid={groupid}")
+
+
+    deleted_items = []
+
+    # Delete .txt file
+    if os.path.isfile(txt_path):
+        os.remove(txt_path)
+        deleted_items.append(txt_path)
+        logging.info(f"Deleted file: {txt_path}")
+    else:
+        logging.warning(f"Text file not found: {txt_path}")
+
+    # Delete vector store directory
+    if os.path.isdir(dir_path):
+        shutil.rmtree(dir_path)
+        deleted_items.append(dir_path)
+        logging.info(f"Deleted directory: {dir_path}")
+    else:
+        logging.warning(f"Directory not found: {dir_path}")
+
+    if not deleted_items:
+        raise HTTPException(status_code=404, detail=f"No existing group found in this group ID: {groupid}")
+
+    return {
+        "status": "success",
+        "deleted": deleted_items,
+        "requested_by": client_host,
+    }
+

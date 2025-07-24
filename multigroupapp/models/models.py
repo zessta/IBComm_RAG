@@ -10,6 +10,10 @@ class MessageRequest(BaseModel):
     timestamp: Optional[str] = None
 
 
+class DeleteRequest(BaseModel):
+    groupid: str = Field(..., min_length=1, max_length=100, description="Group ID of the resource to delete")
+
+
 class UpdateVectorRequest(BaseModel):
     group_id: str = Field(..., min_length=1, description="Group ID")
     document_path: str = Field(..., description="Full path to the text file")

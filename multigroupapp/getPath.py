@@ -5,7 +5,7 @@ import aiofiles
 import os
 from datetime import datetime
 
-BASE_TEXT_DIR = os.getenv("GROUP_TEXT_DIR", "/home/azureuser/IBComm_RAG/multigroupapp/group_texts")
+BASE_TEXT_DIR = os.getenv("GROUP_TEXT_DIR", "/home/Praveen_ZT/IBComm_RAG/multigroupapp/group_texts")
 os.makedirs(BASE_TEXT_DIR, exist_ok=True)
 
 

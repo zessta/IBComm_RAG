@@ -8,7 +8,9 @@ llm_token = os.getenv("token")
 
 
 def chat_with_model(text, query):
-    url = "http://74.225.221.182:8000/v1/chat/completions"
+    
+    # url = "http://74.225.221.182:8000/v1/chat/completions"
+    url = "http://127.0.0.1:8000/v1/chat/completions"
     token = llm_token
     
     headers = {

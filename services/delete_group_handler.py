@@ -5,8 +5,8 @@ logger = logging.getLogger(__name__)
 
 async def handle_delete(req, request):
     groupid = req.groupid.strip()
-    txt_path = os.path.join("/home/Praveen_ZT/IBComm_RAG_api/group_texts", f"{groupid}.txt")
-    dir_path = os.path.join("/home/Praveen_ZT/IBComm_RAG_api/vector_stores", groupid)
+    txt_path = os.path.join("/home/Praveen_ZT/IBComm_RAG/group_texts", f"{groupid}.txt")
+    dir_path = os.path.join("/home/Praveen_ZT/IBComm_RAG/vector_stores", groupid)
     
 
     client_host = request.client.host

@@ -1,5 +1,5 @@
 import logging
-from IBComm_RAG_api.globals import embedding_model
+from IBComm_RAG.globals import embedding_model
 
 logger = logging.getLogger(__name__)
 

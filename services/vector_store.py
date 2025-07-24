@@ -7,7 +7,7 @@ from typing import Optional
 from langchain_community.vectorstores import FAISS
 from langchain_community.document_loaders import TextLoader
 from langchain.text_splitter import RecursiveCharacterTextSplitter
-from IBComm_RAG_api.globals import embedding_model
+from IBComm_RAG.globals import embedding_model
 
 logger = logging.getLogger(__name__)
 
@@ -40,7 +40,7 @@ class VectorDBSingleton:
         """
         self.document_path = document_path
         self.group_id = group_id
-        self.vectorstore_dir = Path(f"/home/Praveen_ZT/IBComm_RAG_api/vector_stores/{group_id}")
+        self.vectorstore_dir = Path(f"/home/Praveen_ZT/IBComm_RAG/vector_stores/{group_id}")
         self.vectorstore_file = self.vectorstore_dir / "index.faiss"
         self.metadata_file = self.vectorstore_dir / "metadata.pkl"
         self.vs: Optional[FAISS] = None

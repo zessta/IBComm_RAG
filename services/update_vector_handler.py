@@ -1,6 +1,6 @@
 import os, traceback, logging
 from fastapi import HTTPException
-from IBComm_RAG_api.services.vector_store import VectorDBSingleton
+from IBComm_RAG.services.vector_store import VectorDBSingleton
 
 logger = logging.getLogger(__name__)
 

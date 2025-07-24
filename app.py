@@ -1,8 +1,8 @@
 from fastapi import FastAPI
-from IBComm_RAG_api.core.startup import load_embedding_model
-from IBComm_RAG_api. api import delete_group,query_from_user,save_message,update_query
+from IBComm_RAG.core.startup import load_embedding_model
+from IBComm_RAG.api import delete_group,query_from_user,save_message,update_query
 
-IBComm_RAG_api = FastAPI(
+IBComm_RAG = FastAPI(
     title="IBComm RAG API",
     description="API for saving group messages, updating vector stores, querying documents using embeddings, and deleting group data.",
     version="1.0.0",
@@ -10,11 +10,11 @@ IBComm_RAG_api = FastAPI(
     redoc_url="/v1/redoc"
 )
 
-@IBComm_RAG_api.on_event("startup")
+@IBComm_RAG.on_event("startup")
 def startup_event():
     load_embedding_model()
 
-IBComm_RAG_api.include_router(save_message.router, prefix="/save_message", tags=["Group Messaging"])
-IBComm_RAG_api.include_router(update_query.router, prefix="/update_vectorstore", tags=["Vector Store"])
-IBComm_RAG_api.include_router(query_from_user.router, prefix="/query", tags=["Query"])
-IBComm_RAG_api.include_router(delete_group.router, prefix="/delete_group", tags=["Group delete"])
+IBComm_RAG.include_router(save_message.router, prefix="/save_message", tags=["Group Messaging"])
+IBComm_RAG.include_router(update_query.router, prefix="/update_vectorstore", tags=["Vector Store"])
+IBComm_RAG.include_router(query_from_user.router, prefix="/query", tags=["Query"])
+IBComm_RAG.include_router(delete_group.router, prefix="/delete_group", tags=["Group delete"])

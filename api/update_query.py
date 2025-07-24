@@ -1,6 +1,6 @@
 from fastapi import APIRouter, HTTPException
-from IBComm_RAG_api.models.models import UpdateVectorRequest
-from IBComm_RAG_api.services.update_vector_handler import update_vector_logic
+from IBComm_RAG.models.models import UpdateVectorRequest
+from IBComm_RAG.services.update_vector_handler import update_vector_logic
 
 router = APIRouter()
 

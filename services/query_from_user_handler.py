@@ -1,9 +1,9 @@
 import os, logging, traceback
 from fastapi import HTTPException
 from fastapi.responses import JSONResponse
-from IBComm_RAG_api.services.vector_store import VectorDBSingleton
-from IBComm_RAG_api.services.llama_call import chat_with_model
-from IBComm_RAG_api.utils.get_path import get_group_file_path
+from IBComm_RAG.services.vector_store import VectorDBSingleton
+from IBComm_RAG.services.llama_call import chat_with_model
+from IBComm_RAG.utils.get_path import get_group_file_path
 
 logger = logging.getLogger(__name__)
 

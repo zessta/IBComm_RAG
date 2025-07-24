@@ -1,6 +1,6 @@
 from fastapi import APIRouter, HTTPException
-from IBComm_RAG_api.models.models import QueryRequest
-from IBComm_RAG_api.services.query_from_user_handler import query_vector_logic
+from IBComm_RAG.models.models import QueryRequest
+from IBComm_RAG.services.query_from_user_handler import query_vector_logic
 
 router = APIRouter()
 

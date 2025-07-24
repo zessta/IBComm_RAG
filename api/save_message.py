@@ -1,6 +1,6 @@
 from fastapi import APIRouter
-from IBComm_RAG_api.models.models import MessageRequest
-from IBComm_RAG_api.services.save_message_handler import save_message_to_file
+from IBComm_RAG.models.models import MessageRequest
+from IBComm_RAG.services.save_message_handler import save_message_to_file
 
 router = APIRouter()
 

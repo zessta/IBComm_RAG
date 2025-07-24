@@ -1,5 +1,5 @@
 from langchain_community.embeddings import HuggingFaceEmbeddings
-from IBComm_RAG_api.const import HF_MODEL_NAME
+from IBComm_RAG.const import HF_MODEL_NAME
 import logging
 
 logger = logging.getLogger(__name__)

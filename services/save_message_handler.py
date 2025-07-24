@@ -1,8 +1,8 @@
 import aiofiles, os
 from datetime import datetime
-from IBComm_RAG_api.models.models import MessageRequest
+from IBComm_RAG.models.models import MessageRequest
 
-DATA_DIR = os.getenv("GROUP_TEXT_DIR", "/home/Praveen_ZT/IBComm_RAG_api/group_texts")
+DATA_DIR = os.getenv("GROUP_TEXT_DIR", "/home/Praveen_ZT/IBComm_RAG/group_texts")
 os.makedirs(DATA_DIR, exist_ok=True)
 
 async def save_message_to_file(req: MessageRequest):

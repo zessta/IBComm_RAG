@@ -4,7 +4,12 @@ from IBComm_RAG.api import delete_group,query_from_user,save_message,update_quer
 
 IBComm_RAG = FastAPI(
     title="IBComm RAG API",
-    description="API for saving group messages, updating vector stores, querying documents using embeddings, and deleting group data.",
+    description=(
+        "An API backend for managing group-based document interactions powered by Retrieval-Augmented Generation (RAG). "
+        "Supports saving user messages, updating and persisting vector embeddings, querying semantically across stored content using LLMs, "
+        "and deleting all group-associated data when a group is removed from the chat. "
+        "Designed to enable intelligent, context-aware document search and interaction."
+    ),
     version="1.0.0",
     docs_url="/v1/docs",
     redoc_url="/v1/redoc"

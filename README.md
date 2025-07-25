@@ -73,8 +73,8 @@ uvicorn app:IBComm_RAG --reload --host 0.0.0.0 --port 5000
 
 ## API Documentation
 
-* Swagger UI: [http://localhost:5000/v1/docs](http://localhost:5000/v1/docs)
-* ReDoc UI: [http://localhost:5000/v1/redoc](http://localhost:5000/v1/redoc)
+* Swagger UI: [http://localhost:5000/v1/docs](http://74.225.221.182:5000/v1/docs)
+* ReDoc UI: [http://localhost:5000/v1/redoc](http://74.225.221.182:5000//v1/redoc)
 
 ---
 

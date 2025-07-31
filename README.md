@@ -41,7 +41,7 @@ IBComm_RAG/
 1. **Clone the repository**
 
 ```bash
-git clone https://github.com/yourusername/IBComm_RAG.git
+git clone https://github.com/zessta/IBComm_RAG.git
 cd IBComm_RAG
 ````
 

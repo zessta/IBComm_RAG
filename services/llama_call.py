@@ -8,8 +8,9 @@ llm_token = os.getenv("token")
 
 
 def chat_with_model(text, query):
-    print(text)
-    url = "http://74.225.221.182:8000/v1/chat/completions"
+    
+    # url = "http://74.225.221.182:8000/v1/chat/completions"
+    url = "http://127.0.0.1:8000/v1/chat/completions"
     token = llm_token
     
     headers = {
@@ -24,12 +25,12 @@ def chat_with_model(text, query):
         source_text = text
 
     prompt = (
-        f"This is the source text:\n{source_text}\n\n"
-        f"Using only the information in the source, answer the following question as accurately and precisely as possible. "
-        f"The answer should be directly based on the content of the source, must include only the most important and relevant details, "
-        f"and use your intuition like a human.\n\n"
-        f"Question: {query}"
-    )
+    f"This is the source text (a group conversation log):\n{source_text}\n\n"
+    f"Based solely on the information in the source, answer the following question as accurately and precisely as possible. "
+    f"The answer must be grounded in the content, follow the sequence of events described, and include only the most relevant and important actions. "
+    f"Use human-like reasoning to organize the response clearly and chronologically.\n\n"
+    f"Question: {query}"
+)
 
 
 

@@ -1,1 +1,58 @@
-.*env
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+.env
+.venv
+env/
+venv/
+ENV/
+*.env/
+
+# VS Code and PyCharm settings
+.vscode/
+.idea/
+
+# macOS
+.DS_Store
+
+# Python-specific
+*.log
+*.sqlite3
+*.db
+*.pkl
+*.npy
+*.h5
+*.faiss
+*.txt
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# Coverage reports
+htmlcov/
+.coverage
+.coverage.*
+
+# Test output
+pytest_cache/
+.tox/
+
+# FastAPI specific (if using static or generated folders)
+static/
+media/
+
+# Local config
+*.local
+*.env
+
+# MyPy and Pylint
+.mypy_cache/
+.pylint.d/
+
+# Build artifacts
+build/
+dist/
+*.egg-info/

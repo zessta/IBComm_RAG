@@ -12,7 +12,7 @@ A FastAPI-based backend service that powers Group Messaging and Retrieval-Augmen
 IBComm_RAG/
 ├── api/                   # Route handlers (delete, query, save, update)
 ├── core/                  # Startup logic (e.g., loading embedding models)
-├── group\_texts/          # Group-level raw or processed text data (optional)
+├── group_texts/          # Group-level raw or processed text data (optional)
 ├── models/                # Pydantic request/response models
 ├── services/              # Business logic
 ├── utils/                 # Utility functions and helpers

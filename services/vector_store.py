@@ -6,7 +6,7 @@ from pathlib import Path
 from typing import Optional
 from langchain_community.vectorstores import FAISS
 from langchain_community.document_loaders import TextLoader
-from langchain.text_splitter import RecursiveCharacterTextSplitter
+from langchain_text_splitter import RecursiveCharacterTextSplitter
 from IBComm_RAG.globals import embedding_model
 
 logger = logging.getLogger(__name__)
